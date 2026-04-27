@@ -73,15 +73,11 @@ function saveHighScore(currentScore) {
 
 // 7. Display Leaderboard (With Proxy Fix)
 async function displayLeaderboard() {
-    // We're using a reliable CORS proxy to bypass the 'origin null' error
-    const proxy = "https://cors-anywhere.herokuapp.com/";
-    const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
-    
+    const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+
     try {
-        const response = await fetch(proxy + sheetURL);
+        const response = await fetch(url, { cache: "no-store" }); // Forces fresh data
         const text = await response.text();
-        
-        // Remove the Google protective wrapper
         const jsonString = text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1);
         const jsonData = JSON.parse(jsonString);
         
