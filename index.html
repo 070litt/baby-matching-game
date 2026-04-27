@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Baby vs. Grownup Match</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Who's Who?</h1>
+    <p>Drag the baby photos to line up with their grown-up versions!</p>
+
+<div class="game-container">
+    <div id="baby-column" class="column"></div>
+
+    <div class="equals-column">
+        <div>=</div>
+        <div>=</div>
+        <div>=</div>
+        <div>=</div>
+    </div>
+
+    <div id="adult-column" class="column"></div>
+</div>
+
+    <button onclick="checkScore()">Submit Matches</button>
+    <h2 id="result"></h2>
+<div class="leaderboard-container">
+    <h3>🏆 Global Top 5</h3>
+    <div id="high-score-display">
+        <p class="loading-text">Loading scores...</p>
+    </div>
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
