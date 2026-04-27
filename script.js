@@ -73,30 +73,43 @@ function saveHighScore(currentScore) {
 
 // 7. Display Leaderboard (With Proxy Fix)
 async function displayLeaderboard() {
+    console.log("Leaderboard: Starting fetch...");
     const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
     try {
-        const response = await fetch(url, { cache: "no-store" }); // Forces fresh data
+        const response = await fetch(url);
         const text = await response.text();
+        console.log("Leaderboard: Data received from Google");
+
+        // Extract the JSON from Google's protective wrapper
         const jsonString = text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1);
         const jsonData = JSON.parse(jsonString);
         
         const rows = jsonData.table.rows;
+        console.log("Leaderboard: Total rows found:", rows.length);
+
         let scores = rows.map(row => {
             return {
+                // Adjusting indices: c[1] is Name, c[2] is Score
                 name: row.c[1] ? row.c[1].v : "Anonymous",
                 score: row.c[2] ? parseInt(row.c[2].v) : 0
             };
         }).filter(item => item.name && !isNaN(item.score));
 
+        // Sort and slice top 5
         scores.sort((a, b) => b.score - a.score);
         const top5 = scores.slice(0, 5);
 
         const display = document.getElementById('high-score-display');
         if (display) {
-            display.innerHTML = top5.length === 0 
-                ? "<div>No scores yet!</div>" 
-                : top5.map(s => `<div><strong>${s.name}</strong> <span>${s.score}/${peopleCount}</span></div>`).join('');
+            if (top5.length === 0) {
+                display.innerHTML = "<div>No scores yet!</div>";
+            } else {
+                display.innerHTML = top5.map(s => 
+                    `<div><strong>${s.name}</strong> <span>${s.score}/${peopleCount}</span></div>`
+                ).join('');
+                console.log("Leaderboard: Display updated successfully");
+            }
         }
     } catch (error) {
         console.error("Leaderboard Error:", error);
