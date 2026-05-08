@@ -1,5 +1,5 @@
 // 1. Configuration
-const peopleCount = 4; 
+const peopleCount = 19; 
 const babyColumn = document.getElementById('baby-column');
 const adultColumn = document.getElementById('adult-column');
 
